@@ -1,0 +1,284 @@
+import java.util.*;
+import java.io.*;
+import java_cup.runtime.Symbol;
+import node.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.io.IOException;
+
+
+/* Preliminaries to use the scanner.  */
+scan with {: return lexer.next_token(); :};
+
+parser code {:
+  public boolean syntaxErrors;
+  Lexer lexer;
+
+  public Parser(Lexer lex) {
+      super(lex);
+      lexer = lex;
+  }
+  
+  public void report_error(String message, Object info) {
+    syntaxErrors = true;
+    
+    System.out.print(message);
+    
+    if ( !(info instanceof Symbol) ) return;
+    Symbol symbol = (Symbol) info;
+    
+    if ( symbol.left < 0 || symbol.right < 0 ) return;
+    
+    System.out.println(" at line "+symbol.left+", column "+symbol.right);
+  }
+:};
+
+action code {:
+    // variables.put(key, value);
+    public Map<String, String> variables = new LinkedHashMap<String, String>();
+    public StringBuilder codigo = new StringBuilder();
+      public static String escape(String str) {
+        char[] escapist = str.toCharArray();
+        StringBuilder result = new StringBuilder();
+        result.append("\"_");
+        for (int i = 0; i < escapist.length; i++) {
+          result.append("\\u"
+              + Integer.toHexString(escapist[i] | 0x10000).substring(1));
+        }
+        result.append("\"");
+        return result.toString();
+      }
+
+      // md5 e sha256
+      public static void hashIn(String id, String algorithm)
+        throws NoSuchAlgorithmException {
+        String s = id;
+        String salt = "f2e3e25e63be9acbb82c1e0ba8eabae6";
+        MessageDigest m = MessageDigest.getInstance(algorithm);
+        String res = s + salt;
+        m.update(res.getBytes(), 0, s.length());
+        String resultado = new BigInteger(1, m.digest()).toString(16);
+        resultado = "_" + resultado;
+        System.out.println("MD5= " + resultado);
+      }
+
+   public void varriableDeclaredError(String nome,int left , int right) {
+    System.out.println("[ERRO] Variavel já declarada: "+nome+" na linha "+left+" coluna "+right);
+  }
+
+  public void varriableUndeclaredError(String nome,int left , int right) {
+    System.out.println("[ERRO] Variavel não declarada: "+nome+" na linha "+left+" coluna "+right);
+  }
+:};
+
+terminal String BOL_TRUE;
+terminal String BOL_FALSE; 
+terminal String NEG;
+terminal String LCOL;
+terminal String RCOL;
+terminal String LPAR;
+terminal String RPAR;
+terminal String LKEY;
+terminal String RKEY;
+terminal String DELIM;
+terminal String KEYWORD;
+terminal String UN_OP;
+terminal String LOG_OP;
+terminal String EXP_OP;
+terminal String ASS_OP;
+terminal String COMP_OP;
+terminal String IDENT;
+terminal String TYPE;
+terminal String ACCESS;
+terminal String QUALIFIED;
+terminal String STRING_LITERAL;
+terminal String COMMA;
+terminal String KEYWORD_CLASS;
+terminal String KEYWORD_IF;
+terminal String KEYWORD_WHILE;
+terminal String INT_NUMBER;
+terminal String REAL_NUMBER;
+terminal String PRINT;
+terminal String PLUSSIGN;
+terminal String CODE_LITERAL;
+terminal String IMPORT_KEYWORD;
+terminal String STATIC_KEYWORD;
+terminal String VECT_TYPE;
+terminal String BREAK_KEYWORD; 
+terminal String RETURN_KEYWORD; 
+
+non terminal Prog prog;
+non terminal Field_var_dec field_var_dec;
+non terminal Field_var_declarations field_var_declarations;
+non terminal Expression expression;
+non terminal NumericExpression numericExpression;
+non terminal Statements statements;
+non terminal Statement statement;
+non terminal Parametro  parametro;
+non terminal ListParam listParam;
+non terminal IdentList identList;
+non terminal VarDefinition varDefinition;
+non terminal DeclaracaoMetodo declaracaoMetodo;
+non terminal ClassStatements classStatements;
+non terminal ClassStatement classStatement;
+non terminal ClassDeclaration classDeclaration;
+non terminal LogicalExpression logicalExpression;
+non terminal IfStatement ifStatement;
+non terminal WhileStatement whileStatement;
+non terminal PrintStatement printStatement;
+non terminal StringExpression stringExpression;
+non terminal CodeLiteralStatement codeLiteralStatement;
+non terminal ImportStatement importStatement;
+non terminal ImportList importList;
+non terminal CompilationUnit compilationUnit;
+non terminal BreakStatement breakStatement;
+non terminal ReturnStatement returnStatement;
+
+non terminal MethodCall methodCall;
+non terminal ParamCallList paramCallList;
+non terminal ParamCall paramCall;
+
+precedence left ASS_OP,EXP_OP,COMP_OP,PLUSSIGN;
+
+prog ::= compilationUnit:c {: 
+    RESULT = new Prog(c);
+    try{
+        File file = new File("intermediateCode.java");
+        file.createNewFile();
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(RESULT.toString().toCharArray());
+        bw.close();
+    }catch(IOException e){
+      e.printStackTrace();
+    }
+    :}
+;
+
+compilationUnit ::= classDeclaration:f{: RESULT = new CompilationUnit0(f);:} 
+                |   importList:i classDeclaration:f{: RESULT = new CompilationUnit1(i,f);:} 
+                ;
+
+importList ::= importStatement:i importList:l {: RESULT = new ImportList1(i,l);:}
+            |  importStatement:i {: RESULT = new ImportList0(i);:}
+            ;
+
+importStatement::= IMPORT_KEYWORD:i QUALIFIED:q DELIM:p {: RESULT = new ImportStatement(i,q,p); :}
+                |  IMPORT_KEYWORD:i IDENT:q DELIM:p {: RESULT = new ImportStatement(i,q,p); :}
+                ;
+
+expression ::= numericExpression:n{: RESULT = new Expression0(n); :}
+            |  logicalExpression:l{: RESULT = new Expression1(l); :}
+            ;
+
+codeLiteralStatement ::= CODE_LITERAL:c {: RESULT = new CodeLiteralStatement(c);:}
+                      ;
+
+
+numericExpression ::= UN_OP:u numericExpression:e {:RESULT = new NumericExpression0(u,e); :}
+                      | IDENT:i {:RESULT = new NumericExpression1(i);  if(variables.get(i) == null){varriableUndeclaredError(i,ileft,iright);};:}
+                      | numericExpression:n ASS_OP:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
+                      | numericExpression:n EXP_OP:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
+                      | numericExpression:n PLUSSIGN:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
+                      | INT_NUMBER:i{:RESULT = new NumericExpression1(i);:}
+                      | REAL_NUMBER:r{:RESULT = new NumericExpression1(r);:}
+                      | methodCall:m{:RESULT = new NumericExpression3(m);:}
+                  ;
+
+logicalExpression ::= BOL_TRUE:t {:RESULT = new LogicalExpression0(t);:}
+                  | BOL_FALSE:f {:RESULT = new LogicalExpression0(f);:}
+                  | numericExpression:p COMP_OP:c numericExpression:s{:RESULT = new LogicalExpression1(p,c,s);:}
+                  | logicalExpression:p COMP_OP:c logicalExpression:s{:RESULT = new LogicalExpression2(p,c,s);:}
+                  ;
+
+field_var_declarations ::= field_var_dec:f {: RESULT = new Field_var_declarations0(f); :}
+                        |  field_var_dec:f field_var_declarations:s {: RESULT = new Field_var_declarations1(f,s); :}
+                        ; 
+
+field_var_dec ::= ACCESS:a TYPE:t IDENT:i DELIM:s {: RESULT = new Field_var_dec(a,t,i,s);if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);}:}
+              ;
+
+statements ::= statement:o statements:s{:RESULT = new Statements0(o,s);:}
+            | statement:o  {:RESULT = new Statements1(o);:}
+            ;
+
+statement ::= expression:e  DELIM:d {: RESULT = new Statement0(e,d);:}
+          | varDefinition:v DELIM:d {: RESULT = new Statement1(v,d); :}
+          | ifStatement:i{:RESULT = new Statement2(i);:}
+          | whileStatement:w{:RESULT = new Statement3(w);:}
+          | printStatement:p{:RESULT = new Statement4(p);:}
+          | codeLiteralStatement:c {:RESULT = new Statement5(c);:}
+          | breakStatement:b {:RESULT = new Statement6(b);:}
+          | returnStatement:r {:RESULT = new Statement7(r);:}
+          | methodCall:m DELIM:d {:RESULT = new Statement8(m,d);:}
+          ;
+
+breakStatement ::= BREAK_KEYWORD:b DELIM:d  {:RESULT = new BreakStatement(b,d);:}
+                ;
+
+returnStatement ::= RETURN_KEYWORD:r expression:e DELIM:d {: RESULT = new ReturnStatement0(r,e,d);:}
+                |   RETURN_KEYWORD:r stringExpression:e DELIM:d {: RESULT = new ReturnStatement1(r,e,d);:}
+                ;
+
+methodCall ::= IDENT:n LPAR:l paramCallList:p RPAR:r {:RESULT = new MethodCall(n,l,p,r); :}
+            ;
+
+paramCallList ::= paramCall:p COMMA:c paramCallList:l {:RESULT = new ParamCallList0(p,c,l); :}
+              | paramCall:p {:RESULT = new ParamCallList1(p); :}
+              ;
+
+paramCall ::= IDENT:i {:RESULT = new ParamCall(i); :}
+          | STRING_LITERAL:i{:RESULT = new ParamCall(i); :}
+          | INT_NUMBER:i{:RESULT = new ParamCall(i); :}
+          | REAL_NUMBER:i{:RESULT = new ParamCall(i); :}
+          |
+          ;
+
+printStatement ::= PRINT:p LPAR:l stringExpression:s RPAR:r DELIM:d {: RESULT = new PrintStatement(p,l,s,r,d);:}
+               ;
+
+stringExpression ::= stringExpression:s PLUSSIGN:p stringExpression:a {: RESULT = new StringExpression0(s,p,a);:}
+                  | STRING_LITERAL:s{: RESULT = new StringExpression1(s); :}
+                  | IDENT:i{:RESULT = new StringExpression1(i); if(variables.get(i) == null){varriableUndeclaredError(i,ileft,iright);};:}
+                  | methodCall:m{:RESULT = new StringExpression2(m);:}
+                  ; 
+
+ifStatement ::= KEYWORD_IF:a LPAR:b logicalExpression:c RPAR:d LCOL:e statements:f RCOL:g {:RESULT = new IfStatement(a,b,c,d,e,f,g);:}
+            ;
+
+whileStatement ::= KEYWORD_WHILE:a LPAR:b logicalExpression:c RPAR:d LCOL:e statements:f RCOL:g {:RESULT = new WhileStatement(a,b,c,d,e,f,g);:}
+            ;
+
+listParam ::= parametro:p COMMA:c listParam:l {:RESULT = new ListParam0(p,c,l);:}
+          |   parametro:p{:RESULT = new ListParam1(p);:}
+          ;
+
+parametro ::= TYPE:t IDENT:i {:RESULT = new Parametro(t,i);if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:} 
+          |   VECT_TYPE:t IDENT:i {:RESULT = new Parametro(t,i);if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:} 
+          |   //sem parametro
+          ;
+
+identList ::= IDENT:i COMMA:c identList:l{: RESULT = new IdentList0(i,c,l); if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:}
+            | IDENT:i {: RESULT = new IdentList1(i); if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:} 
+            ;
+
+varDefinition ::= TYPE:t identList:l {: RESULT = new VarDefinition(t,l);:}
+              ;
+
+declaracaoMetodo ::= ACCESS:a TYPE:t IDENT:y LPAR:q listParam:l RPAR:w LCOL:c statements:s RCOL:r {:RESULT = new DeclaracaoMetodo0(a,t,y,q,l,w,c,s,r);:}
+                  |   ACCESS:a STATIC_KEYWORD:k TYPE:t IDENT:y LPAR:q listParam:l RPAR:w LCOL:c statements:s RCOL:r {:RESULT = new DeclaracaoMetodo1(a,k,t,y,q,l,w,c,s,r);:}
+                  ;
+
+classStatements ::= classStatement:c classStatements:s {: RESULT = new ClassStatements0(c,s);:}
+                | classStatement:c {: RESULT = new ClassStatements1(c);:}
+                ;
+
+classStatement ::= field_var_dec:f {: RESULT = new ClassStatement0(f);:}
+                |  declaracaoMetodo:d {: RESULT = new ClassStatement1(d);:}
+                ;
+
+classDeclaration ::= ACCESS:a KEYWORD_CLASS:k IDENT:i LCOL:l classStatements:c RCOL:r {:RESULT = new ClassDeclaration(a,k,i,l,c,r);:}
+                  ;

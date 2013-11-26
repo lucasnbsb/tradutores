@@ -1,0 +1,221 @@
+import java.util.*;
+import java.io.*;
+import java_cup.runtime.Symbol;
+import node.*;
+
+
+/* Preliminaries to use the scanner.  */
+scan with {: return lexer.next_token(); :};
+
+
+parser code {: 
+  public boolean syntaxErrors;
+  Lexer lexer;
+
+  public Parser(Lexer lex) {
+      super(lex);
+      lexer = lex;
+  }
+
+  
+  public void report_error(String message, Object info) {
+    syntaxErrors = true;
+    
+    System.out.print(message);
+    
+    if ( !(info instanceof Symbol) ) return;
+    Symbol symbol = (Symbol) info;
+    
+    if ( symbol.left < 0 || symbol.right < 0 ) return;
+    
+    System.out.println(" at line "+symbol.left+", column "+symbol.right);
+  }
+:};
+
+terminal String BOL_TRUE;
+terminal String BOL_FALSE; 
+terminal String NEG;
+terminal String LCOL;
+terminal String RCOL;
+terminal String LPAR;
+terminal String RPAR;
+terminal String LKEY;
+terminal String RKEY;
+terminal String DELIM;
+terminal String KEYWORD;
+terminal String UN_OP;
+terminal String LOG_OP;
+terminal String EXP_OP;
+terminal String ASS_OP;
+terminal String COMP_OP;
+terminal String IDENT;
+terminal String TYPE;
+terminal String ACCESS;
+terminal String QUALIFIED;
+terminal String STRING_LITERAL;
+terminal String COMMA;
+
+non terminal Prog prog;
+non terminal Field_var_dec field_var_dec;
+non terminal Field_var_declarations field_var_declarations;  
+non terminal Expression expression;
+non terminal NumericExpression numericExpression;
+non terminal IdentList identList;
+non terminal VarDefinition varDefinition;
+non terminal Statements statements;
+non terminal Statement statement;
+non terminal ListParam listParam;
+non terminal Parametro  parametro;
+
+
+precedence left ASS_OP,EXP_OP;
+
+prog ::= expression:f {: RESULT = new Prog(f); :} 
+     ;
+
+listParam ::= parametro:p COMMA:c listParam:l {:RESULT = new ListParam(p,c,l);:}
+          ;
+
+parametro ::= TYPE:t IDENT:i {:RESULT = new Parametro(t,i);:} 
+          ;
+
+statements ::= statement:o statements:s{:RESULT = new Statements(o,s);:}
+            ;
+
+statement ::= expression:e  {: RESULT = new Statement(e); :}
+          ;
+
+expression ::= numericExpression:n{: RESULT = new Expression(n); :}
+            ;
+
+varDefinition ::= TYPE:t identList:l {: RESULT = new VarDefinition(t,l);:}
+              ;
+
+identList ::= IDENT:i COMMA:c identList:l{: RESULT = new IdentList0(i,c,l); :}
+            | IDENT:i {: RESULT = new IdentList1(i); :}
+            ;
+
+numericExpression ::= UN_OP:u numericExpression:e {:RESULT = new NumericExpression0(u,e); :}
+                      | IDENT:i {:RESULT = new NumericExpression1(i); :}
+                      | numericExpression:n ASS_OP:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
+                      | numericExpression:n EXP_OP:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
+                  ;
+
+field_var_declarations ::= field_var_dec:f {: RESULT = new Field_var_declarations0(f); :}
+                        |  field_var_dec:f field_var_declarations:s {: RESULT = new Field_var_declarations1(f,s); :}
+                        ; 
+
+field_var_dec ::= ACCESS:a TYPE:t IDENT:i DELIM:s {: RESULT = new Field_var_dec(a,t,i,s); :}
+              ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import node.Constants;
+import java_cup.runtime.Symbol;
+
+%%
+
+%class Lexer
+%cup
+%implements sym, Constants
+%line
+%column
+
+%{
+
+  private Symbol symbol(int sym) {
+    return new Symbol(sym, yyline+1, yycolumn+1);
+  }
+  
+  private Symbol symbol(int sym, Object val) {
+    return new Symbol(sym, yyline+1, yycolumn+1, val);
+  }
+  
+  private void error(String message) {
+    System.out.println("Error at line "+(yyline+1)+", column "+(yycolumn+1)+" : "+message);
+  }
+%} 
+
+Keyword = ("class" | "interface" | "enum" | "final" | "abstract" |
+ "extends" | "implements" | "throws" | "switch" | "case" | "default" |
+"if" | "else" | "while" | "for" | "this" | "new" )
+
+BTRUE = "true"
+BFALSE = "false"
+StringLiteral = ("\"" [^"\""]* "\"")
+ExpressionOperators = ("+"|"-"|"*"|"/")
+UnaryOperators = ("++"|"--")
+LogicalOperators = ("&&"|"||"|"&="|"^="|"|="|"<<="|">>="|">>>=")
+AssignmentOperators = ("="|"+="|"-="|"*="|"/="|"%=")
+QualifiedName = [:jletter:][:jletterdigit:]*("\."[:jletter:][:jletterdigit:]*)+
+CompareOperators = (([">"|"<"|"="|"!"]"=")|">"|"<")
+Ident = [:jletter:][:jletterdigit:]*
+Access = "public"|"private"
+Type = ("String" | "boolean" | "int" | "char" | "long" | "float" | "double" | "void")
+new_line = \r|\n|\r\n;
+white_space = {new_line} | [ \t\f]
+
+%%
+
+"!" {return symbol( NEG,yytext());}
+"{" {return symbol( LCOL,yytext());}
+"}" {return symbol( RCOL,yytext());}
+"(" {return symbol( LPAR,yytext());}
+")" {return symbol( RPAR,yytext());}
+"[" {return symbol( LKEY,yytext());}
+"]" {return symbol( RKEY,yytext());}
+";" {return symbol( DELIM,yytext());}
+"," {return symbol( COMMA,yytext());}
+
+{BTRUE} {return symbol( BOL_TRUE,yytext());}
+{BFALSE} {return symbol( BOL_FALSE,yytext());}
+
+{Keyword } {return symbol( KEYWORD,yytext());}
+{LogicalOperators} {return symbol( LOG_OP,yytext());}
+{UnaryOperators} {return symbol( UN_OP,yytext());}
+{ExpressionOperators} {return symbol( EXP_OP,yytext());}
+{CompareOperators} {return symbol( COMP_OP,yytext());}
+{AssignmentOperators} {return symbol( ASS_OP,yytext());}
+{StringLiteral} { return symbol( STRING_LITERAL,yytext()); }
+{Type}  { return symbol(TYPE,yytext()); }
+{Access} { return symbol(ACCESS,yytext());}
+{QualifiedName} {return symbol(QUALIFIED,yytext());}
+{Ident}           { return symbol(IDENT, yytext()); }
+
+
+{white_space}     {}
+
+/* error fallback */
+.|\n              {  /* throw new Error("Illegal character <"+ yytext()+">");*/
+        error("Illegal character <"+ yytext()+">");
+                  }
