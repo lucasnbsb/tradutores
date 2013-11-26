@@ -42,21 +42,13 @@ public class LogicalExpression1 extends LogicalExpression {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("LogicalExpression1(\n");
-      if (numericExpression != null)
-        buffer.append(numericExpression.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+operador);
-    buffer.append("\n");
-      if (numericExpression2 != null)
-        buffer.append(numericExpression2.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [LogicalExpression1]");
+    if (numericExpression != null)
+      buffer.append(numericExpression.toString(" "));
+    buffer.append(" "+operador);
+    if (numericExpression2 != null)
+      buffer.append(numericExpression2.toString(" "));
+    else
+      buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

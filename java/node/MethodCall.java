@@ -53,20 +53,13 @@ public class MethodCall implements SyntaxNode {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("MethodCall(\n");
-    buffer.append("  "+tab+name);
-    buffer.append("\n");
-    buffer.append("  "+tab+lpar);
-    buffer.append("\n");
+    buffer.append(name);
+    buffer.append(" "+lpar);
       if (paramCallList != null)
-        buffer.append(paramCallList.toString("  "+tab));
+        buffer.append(paramCallList.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+rpar);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [MethodCall]");
+    buffer.append(" "+rpar);
     return buffer.toString();
   }
 }

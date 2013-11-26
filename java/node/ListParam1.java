@@ -34,14 +34,8 @@ public class ListParam1 extends ListParam {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("ListParam1(\n");
-      if (parametro != null)
-        buffer.append(parametro.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [ListParam1]");
+    if (parametro != null)
+      buffer.append(parametro.toString("  "+tab));
     return buffer.toString();
   }
 }

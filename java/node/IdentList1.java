@@ -30,7 +30,7 @@ public class IdentList1 extends IdentList {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("IdentList1(\n");
+    
     buffer.append("  "+tab+nome);
     buffer.append("\n");
     buffer.append(tab);

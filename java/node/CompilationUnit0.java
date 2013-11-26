@@ -33,15 +33,11 @@ public class CompilationUnit0 extends CompilationUnit {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("CompilationUnit0(\n");
       if (classDeclaration != null)
-        buffer.append(classDeclaration.toString("  "+tab));
+        buffer.append(classDeclaration.toString(tab));
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [CompilationUnit0]");
     return buffer.toString();
   }
 }

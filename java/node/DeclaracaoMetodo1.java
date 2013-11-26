@@ -55,36 +55,19 @@ public class DeclaracaoMetodo1 extends DeclaracaoMetodo {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("DeclaracaoMetodo1(\n");
-    buffer.append("  "+tab+mod);
+    buffer.append(tab+mod);
+    buffer.append(" "+staticKeyword);
+    buffer.append(" "+tipo);
+    buffer.append(" "+nome);
+    buffer.append(" "+lpar);
+    if (listParam != null)
+      buffer.append(listParam.toString("  "));
+    buffer.append(" "+rpar);
+    buffer.append(" "+lcha);
     buffer.append("\n");
-    buffer.append("  "+tab+staticKeyword);
-    buffer.append("\n");
-    buffer.append("  "+tab+tipo);
-    buffer.append("\n");
-    buffer.append("  "+tab+nome);
-    buffer.append("\n");
-    buffer.append("  "+tab+lpar);
-    buffer.append("\n");
-      if (listParam != null)
-        buffer.append(listParam.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+rpar);
-    buffer.append("\n");
-    buffer.append("  "+tab+lcha);
-    buffer.append("\n");
-      if (statements != null)
-        buffer.append(statements.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+rcha);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [DeclaracaoMetodo1]");
+    if (statements != null)
+      buffer.append(statements.toString("  "+tab));
+    buffer.append(" "+rcha);
     return buffer.toString();
   }
 }

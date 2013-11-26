@@ -40,7 +40,7 @@ public class ClassStatements0 extends ClassStatements {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("ClassStatements0(\n");
+    
       if (classStatement != null)
         buffer.append(classStatement.toString("  "+tab));
       else
@@ -51,8 +51,6 @@ public class ClassStatements0 extends ClassStatements {
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [ClassStatements0]");
     return buffer.toString();
   }
 }

@@ -41,22 +41,15 @@ public class NumericExpression2 extends NumericExpression {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("NumericExpression2(\n");
-      if (numericExpression != null)
-        buffer.append(numericExpression.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+operador);
-    buffer.append("\n");
-      if (numericExpression2 != null)
-        buffer.append(numericExpression2.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [NumericExpression2]");
+    if (numericExpression != null)
+      buffer.append(numericExpression.toString(" "));
+    else
+      buffer.append(tab+"  null");
+    buffer.append("  "+operador);
+    if (numericExpression2 != null)
+      buffer.append(numericExpression2.toString(" "));
+    else
+      buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

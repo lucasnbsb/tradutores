@@ -39,10 +39,8 @@ public class CompilationUnit1 extends CompilationUnit {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("CompilationUnit1(\n");
       if (importList != null)
-        buffer.append(importList.toString("  "+tab));
+        buffer.append(importList.toString(tab));
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
@@ -51,8 +49,6 @@ public class CompilationUnit1 extends CompilationUnit {
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [CompilationUnit1]");
     return buffer.toString();
   }
 }

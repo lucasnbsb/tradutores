@@ -34,14 +34,12 @@ public class ClassStatement1 extends ClassStatement {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("ClassStatement1(\n");
+    
       if (declaracaoMetodo != null)
         buffer.append(declaracaoMetodo.toString("  "+tab));
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [ClassStatement1]");
     return buffer.toString();
   }
 }

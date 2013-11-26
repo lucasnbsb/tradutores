@@ -29,12 +29,7 @@ public class LogicalExpression0 extends LogicalExpression {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("LogicalExpression0(\n");
-    buffer.append("  "+tab+nome);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [LogicalExpression0]");
+    buffer.append(tab+nome);
     return buffer.toString();
   }
 }

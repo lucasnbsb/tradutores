@@ -42,12 +42,8 @@ public class CodeLiteralStatement implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
-    buffer.append("  "+tab+lit);
+    buffer.append(tab+lit);
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [CodeLiteralStatement]");
     return buffer.toString();
   }
 }

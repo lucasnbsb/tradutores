@@ -56,15 +56,10 @@ public class ClassDeclaration implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("ClassDeclaration(\n");
-    buffer.append("  "+tab+pub);
-    buffer.append("\n");
-    buffer.append("  "+tab+cla);
-    buffer.append("\n");
-    buffer.append("  "+tab+nome);
-    buffer.append("\n");
-    buffer.append("  "+tab+lcol);
+    buffer.append(tab+pub);
+    buffer.append(" "+cla);
+    buffer.append(" "+nome);
+    buffer.append(" "+lcol);
     buffer.append("\n");
       if (classStatements != null)
         buffer.append(classStatements.toString("  "+tab));
@@ -73,8 +68,6 @@ public class ClassDeclaration implements SyntaxNode {
     buffer.append("\n");
     buffer.append("  "+tab+rcol);
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [ClassDeclaration]");
     return buffer.toString();
   }
 }

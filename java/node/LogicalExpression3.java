@@ -34,14 +34,10 @@ public class LogicalExpression3 extends LogicalExpression {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("LogicalExpression3(\n");
-      if (methodCall != null)
-        buffer.append(methodCall.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [LogicalExpression3]");
+    if (methodCall != null)
+      buffer.append(methodCall.toString("  "+tab));
+    else
+      buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

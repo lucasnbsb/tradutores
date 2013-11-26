@@ -35,17 +35,11 @@ public class NumericExpression0 extends NumericExpression {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("NumericExpression0(\n");
-    buffer.append("  "+tab+nome);
-    buffer.append("\n");
-      if (numericExpression != null)
-        buffer.append(numericExpression.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [NumericExpression0]");
+    buffer.append(tab+nome);
+    if (numericExpression != null)
+      buffer.append(numericExpression.toString(" "));
+    else
+      buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

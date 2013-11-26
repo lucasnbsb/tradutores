@@ -63,7 +63,7 @@ public class IfStatement implements SyntaxNode {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("IfStatement(\n");
+    
     buffer.append("  "+tab+ifKeyword);
     buffer.append("\n");
     buffer.append("  "+tab+lpar);

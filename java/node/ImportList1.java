@@ -40,7 +40,8 @@ public class ImportList1 extends ImportList {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("ImportList1(\n");
+    
+
       if (importStatement != null)
         buffer.append(importStatement.toString("  "+tab));
       else

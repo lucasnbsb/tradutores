@@ -34,7 +34,7 @@ public class Expression0 extends Expression {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("Expression0(\n");
+    
       if (numericExpression != null)
         buffer.append(numericExpression.toString("  "+tab));
       else

@@ -42,12 +42,7 @@ public class ParamCall implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("ParamCall(\n");
-    buffer.append("  "+tab+name);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [ParamCall]");
+    buffer.append(tab+name);
     return buffer.toString();
   }
 }

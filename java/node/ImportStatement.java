@@ -47,7 +47,8 @@ public class ImportStatement implements SyntaxNode {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(tab);
-    buffer.append("ImportStatement(\n");
+    
+
     buffer.append("  "+tab+importKeyword);
     buffer.append("\n");
     buffer.append("  "+tab+qualifiedName);
