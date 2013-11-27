@@ -44,14 +44,8 @@ public class Parametro implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("Parametro(\n");
-    buffer.append("  "+tab+tipo);
-    buffer.append("\n");
-    buffer.append("  "+tab+nome);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Parametro]");
+    buffer.append(" "+tipo);
+    buffer.append(" "+nome);
     return buffer.toString();
   }
 }

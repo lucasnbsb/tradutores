@@ -33,15 +33,12 @@ public class Statements1 extends Statements {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("Statements1(\n");
       if (statement != null)
         buffer.append(statement.toString("  "+tab));
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
     buffer.append(tab);
-    buffer.append(") [Statements1]");
     return buffer.toString();
   }
 }

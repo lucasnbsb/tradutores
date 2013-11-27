@@ -45,10 +45,9 @@ public class ListParam0 extends ListParam {
     if (parametro != null)
       buffer.append(parametro.toString("  "+tab));
     buffer.append("  "+tab+virgula);
-      if (listParam != null)
-        buffer.append(listParam.toString("  "+tab));
+    if (listParam != null)
+      buffer.append(listParam.toString("  "+tab));
     buffer.append(tab);
-    buffer.append(") [ListParam0]");
     return buffer.toString();
   }
 }

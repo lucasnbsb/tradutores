@@ -46,15 +46,10 @@ public class Prog implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("Prog(\n");
       if (compilationUnit != null)
         buffer.append(compilationUnit.toString("  "+tab));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Prog]");
     return buffer.toString();
   }
 }

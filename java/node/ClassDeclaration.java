@@ -62,12 +62,11 @@ public class ClassDeclaration implements SyntaxNode {
     buffer.append(" "+lcol);
     buffer.append("\n");
       if (classStatements != null)
-        buffer.append(classStatements.toString("  "+tab));
+        buffer.append(classStatements.toString("  "));
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
     buffer.append("  "+tab+rcol);
-    buffer.append("\n");
     return buffer.toString();
   }
 }

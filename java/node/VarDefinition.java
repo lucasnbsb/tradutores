@@ -48,17 +48,11 @@ public class VarDefinition implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("VarDefinition(\n");
     buffer.append("  "+tab+nome);
-    buffer.append("\n");
-      if (identList != null)
-        buffer.append(identList.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [VarDefinition]");
+    if (identList != null)
+      buffer.append(identList.toString(" "));
+    else
+      buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

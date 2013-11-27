@@ -35,17 +35,12 @@ public class Statement0 extends Statement {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("Statement0(\n");
       if (expression != null)
         buffer.append(expression.toString("  "+tab));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
     buffer.append("  "+tab+ptvirgula);
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Statement0]");
     return buffer.toString();
   }
 }

@@ -62,30 +62,22 @@ public class IfStatement implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
-    buffer.append("  "+tab+ifKeyword);
-    buffer.append("\n");
-    buffer.append("  "+tab+lpar);
-    buffer.append("\n");
+    buffer.append(" "+tab+ifKeyword);
+    buffer.append(" "+lpar);
       if (logicalExpression != null)
-        buffer.append(logicalExpression.toString("  "+tab));
+        buffer.append(logicalExpression.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+rpar);
-    buffer.append("\n");
-    buffer.append("  "+tab+lcha);
+    buffer.append(" "+rpar);
+    buffer.append(" "+lcha);
     buffer.append("\n");
       if (statements != null)
-        buffer.append(statements.toString("  "+tab));
+        buffer.append(statements.toString(" "));
       else
         buffer.append(tab+"  null");
     buffer.append("\n");
-    buffer.append("  "+tab+rcha);
+    buffer.append(" "+tab+rcha);
     buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [IfStatement]");
     return buffer.toString();
   }
 }
