@@ -3,13 +3,7 @@ Prog(
                   public String getTeste (   ) {
           Statements1(
             Statement7(
-              ReturnStatement1(
-                return
-                StringExpression1(
-                  "teste"
-                ) [StringExpression1]
-                ;
-              ) [ReturnStatement1]
+                return  "teste"  ;
             ) [Statement7]
           ) [Statements1] }
 
@@ -92,9 +86,7 @@ Prog(
                                       PrintStatement(
                                         System.out.println
                                         (
-                                        StringExpression1(
-                                          "teste"
-                                        ) [StringExpression1]
+  "teste"
                                         )
                                         ;
                                       ) [PrintStatement]
@@ -136,9 +128,7 @@ Prog(
                                                       PrintStatement(
                                                         System.out.println
                                                         (
-                                                        StringExpression1(
-                                                          "oi"
-                                                        ) [StringExpression1]
+  "oi"
                                                         )
                                                         ;
                                                       ) [PrintStatement]
@@ -148,9 +138,7 @@ Prog(
                                                         PrintStatement(
                                                           System.out.println
                                                           (
-                                                          StringExpression1(
-                                                            s1
-                                                          ) [StringExpression1]
+  s1
                                                           )
                                                           ;
                                                         ) [PrintStatement]

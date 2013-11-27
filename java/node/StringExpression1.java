@@ -29,12 +29,7 @@ public class StringExpression1 extends StringExpression {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("StringExpression1(\n");
-    buffer.append("  "+tab+literal);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [StringExpression1]");
+    buffer.append("  "+literal);
     return buffer.toString();
   }
 }
