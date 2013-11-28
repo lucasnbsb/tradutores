@@ -8,6 +8,16 @@ import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /* Preliminaries to use the scanner.  */
@@ -39,34 +49,36 @@ parser code {:
 action code {:
     public String filename;
 
+    public static String hashIn(String id, String algorithm) {
+    String s = id;
+    String salt = "f2e3e25e63be9acbb82c1e0ba8eabae6";
+    MessageDigest m = null;
+    try {
+      m = MessageDigest.getInstance(algorithm);
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    }
+    String res = s + salt;
+    m.update(res.getBytes(), 0, s.length());
+    String resultado = new BigInteger(1, m.digest()).toString(16);
+    resultado = "_" + resultado;
+    return resultado.toString();
+  }
+
+  public static String escape(String str) {
+    Charset characterSet = Charset.forName("US-ASCII");
+    byte[] bytes = str.getBytes(characterSet);
+    StringBuilder result = new StringBuilder();
+    for (int i = 0; i < bytes.length - 1; i++) {
+      result.append("(char)" + bytes[i] + "+" + '"' + '"' + "+ ");
+    }
+    result.append("(char)" + bytes[bytes.length - 1]);
+    return result.toString();
+  }
+
     // variables.put(key, value);
     public Map<String, String> variables = new LinkedHashMap<String, String>();
     public StringBuilder codigo = new StringBuilder();
-      public static String escape(String str) {
-        char[] escapist = str.toCharArray();
-        StringBuilder result = new StringBuilder();
-        result.append("\"_");
-        for (int i = 0; i < escapist.length; i++) {
-          result.append("\\u"
-              + Integer.toHexString(escapist[i] | 0x10000).substring(1));
-        }
-        result.append("\"");
-        return result.toString();
-      }
-
-      // md5 e sha256
-      public static void hashIn(String id, String algorithm)
-        throws NoSuchAlgorithmException {
-        String s = id;
-        String salt = "f2e3e25e63be9acbb82c1e0ba8eabae6";
-        MessageDigest m = MessageDigest.getInstance(algorithm);
-        String res = s + salt;
-        m.update(res.getBytes(), 0, s.length());
-        String resultado = new BigInteger(1, m.digest()).toString(16);
-        resultado = "_" + resultado;
-        System.out.println("MD5= " + resultado);
-      }
-
    public void varriableDeclaredError(String nome,int left , int right) {
     System.out.println("[ERRO] Variavel já declarada: "+nome+" na linha "+left+" coluna "+right);
   }
@@ -181,7 +193,7 @@ codeLiteralStatement ::= CODE_LITERAL:c {: RESULT = new CodeLiteralStatement(c);
 
 
 numericExpression ::= UN_OP:u numericExpression:e {:RESULT = new NumericExpression0(u,e); :}
-                      | IDENT:i {:RESULT = new NumericExpression1(i);  if(variables.get(i) == null){varriableUndeclaredError(i,ileft,iright);};:}
+                      | IDENT:i {:RESULT = new NumericExpression1(hashIn(i,"md5"));  if(variables.get(i) == null){varriableUndeclaredError(i,ileft,iright);};:}
                       | numericExpression:n ASS_OP:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
                       | numericExpression:n EXP_OP:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
                       | numericExpression:n PLUSSIGN:a numericExpression:m {:RESULT = new NumericExpression2(n,a,m); :}
@@ -200,7 +212,7 @@ field_var_declarations ::= field_var_dec:f {: RESULT = new Field_var_declaration
                         |  field_var_dec:f field_var_declarations:s {: RESULT = new Field_var_declarations1(f,s); :}
                         ; 
 
-field_var_dec ::= ACCESS:a TYPE:t IDENT:i DELIM:s {: RESULT = new Field_var_dec(a,t,i,s);if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);}:}
+field_var_dec ::= ACCESS:a TYPE:t IDENT:i DELIM:s {: RESULT = new Field_var_dec(a,t,hashIn(i,"md5"),s);if(variables.get(i) == null){variables.put(i, hashIn(i,"md5"));}else{varriableDeclaredError(i,ileft,iright);}:}
               ;
 
 statements ::= statement:o statements:s{:RESULT = new Statements0(o,s);:}
@@ -232,7 +244,7 @@ paramCallList ::= paramCall:p COMMA:c paramCallList:l {:RESULT = new ParamCallLi
               | paramCall:p {:RESULT = new ParamCallList1(p); :}
               ;
 
-paramCall ::= IDENT:i {:RESULT = new ParamCall(i); :}
+paramCall ::= IDENT:i {:RESULT = new ParamCall(hashIn(i,"md5")); :}
           | STRING_LITERAL:i{:RESULT = new ParamCall(i); :}
           | INT_NUMBER:i{:RESULT = new ParamCall(i); :}
           | REAL_NUMBER:i{:RESULT = new ParamCall(i); :}
@@ -243,8 +255,8 @@ printStatement ::= PRINT:p LPAR:l stringExpression:s RPAR:r DELIM:d {: RESULT = 
                ;
 
 stringExpression ::= stringExpression:s PLUSSIGN:p stringExpression:a {: RESULT = new StringExpression0(s,p,a);:}
-                  | STRING_LITERAL:s{: RESULT = new StringExpression1(s); :}
-                  | IDENT:i{:RESULT = new StringExpression1(i); if(variables.get(i) == null){varriableUndeclaredError(i,ileft,iright);};:}
+                  | STRING_LITERAL:s{: RESULT = new StringExpression1(escape(s)); :}
+                  | IDENT:i{:RESULT = new StringExpression1(hashIn(i,"md5")); if(variables.get(i) == null){varriableUndeclaredError(i,ileft,iright);};:}
                   | methodCall:m{:RESULT = new StringExpression2(m);:}
                   ; 
 
@@ -258,13 +270,13 @@ listParam ::= parametro:p COMMA:c listParam:l {:RESULT = new ListParam0(p,c,l);:
           |   parametro:p{:RESULT = new ListParam1(p);:}
           ;
 
-parametro ::= TYPE:t IDENT:i {:RESULT = new Parametro(t,i);if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:} 
-          |   VECT_TYPE:t IDENT:i {:RESULT = new Parametro(t,i);if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:} 
+parametro ::= TYPE:t IDENT:i {:RESULT = new Parametro(t,hashIn(i,"md5"));if(variables.get(i) == null){variables.put(i, hashIn(i,"md5"));}else{varriableDeclaredError(i,ileft,iright);};:} 
+          |   VECT_TYPE:t IDENT:i {:RESULT = new Parametro(t,hashIn(i,"md5"));if(variables.get(i) == null){variables.put(i, hashIn(i,"md5"));}else{varriableDeclaredError(i,ileft,iright);};:} 
           |   //sem parametro
           ;
 
-identList ::= IDENT:i COMMA:c identList:l{: RESULT = new IdentList0(i,c,l); if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:}
-            | IDENT:i {: RESULT = new IdentList1(i); if(variables.get(i) == null){variables.put(i, "");}else{varriableDeclaredError(i,ileft,iright);};:} 
+identList ::= IDENT:i COMMA:c identList:l{: RESULT = new IdentList0(hashIn(i,"md5"),c,l); if(variables.get(i) == null){variables.put(i, hashIn(i,"md5"));}else{varriableDeclaredError(i,ileft,iright);};:}
+            | IDENT:i {: RESULT = new IdentList1(hashIn(i,"md5")); if(variables.get(hashIn(i,"md5")) == null){variables.put(i, hashIn(i,"md5"));}else{varriableDeclaredError(i,ileft,iright);};:} 
             ;
 
 varDefinition ::= TYPE:t identList:l {: RESULT = new VarDefinition(t,l);:}
