@@ -36,8 +36,6 @@ public class ParamCallList1 extends ParamCallList {
     buffer.append(tab);
       if (paramCall != null)
         buffer.append(paramCall.toString(" "));
-      else
-        buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

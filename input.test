@@ -1,5 +1,5 @@
 public class teste {
-	public String getTeste(){
+	public static String getTeste(){
 		return "teste";
 	}
 

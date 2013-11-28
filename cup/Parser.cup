@@ -37,6 +37,8 @@ parser code {:
 :};
 
 action code {:
+    public String filename;
+
     // variables.put(key, value);
     public Map<String, String> variables = new LinkedHashMap<String, String>();
     public StringBuilder codigo = new StringBuilder();
@@ -146,7 +148,7 @@ precedence left ASS_OP,EXP_OP,COMP_OP,PLUSSIGN;
 prog ::= compilationUnit:c {: 
     RESULT = new Prog(c);
     try{
-        File file = new File("intermediateCode.java");
+        File file = new File(filename+".java");
         file.createNewFile();
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
@@ -280,5 +282,5 @@ classStatement ::= field_var_dec:f {: RESULT = new ClassStatement0(f);:}
                 |  declaracaoMetodo:d {: RESULT = new ClassStatement1(d);:}
                 ;
 
-classDeclaration ::= ACCESS:a KEYWORD_CLASS:k IDENT:i LCOL:l classStatements:c RCOL:r {:RESULT = new ClassDeclaration(a,k,i,l,c,r);:}
+classDeclaration ::= ACCESS:a KEYWORD_CLASS:k IDENT:i LCOL:l classStatements:c RCOL:r {:RESULT = new ClassDeclaration(a,k,i,l,c,r);filename = i;:}
                   ;

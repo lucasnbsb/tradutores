@@ -45,10 +45,7 @@ public class BreakStatement implements SyntaxNode {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
     buffer.append("  "+tab+breakKeyword);
-    buffer.append("\n");
-    buffer.append("  "+tab+ptvirgula);
-    buffer.append("\n");
-    buffer.append(tab);
+    buffer.append(" "+ptvirgula);
     return buffer.toString();
   }
 }

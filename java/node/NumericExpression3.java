@@ -35,8 +35,6 @@ public class NumericExpression3 extends NumericExpression {
     StringBuffer buffer = new StringBuffer();    
     if (methodCall != null)
       buffer.append(methodCall.toString("  "+tab));
-    else
-      buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

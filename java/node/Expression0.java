@@ -36,12 +36,9 @@ public class Expression0 extends Expression {
     buffer.append(tab);
     
       if (numericExpression != null)
-        buffer.append(numericExpression.toString("  "+tab));
+        buffer.append(numericExpression.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Expression0]");
     return buffer.toString();
   }
 }

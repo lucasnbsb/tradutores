@@ -54,23 +54,15 @@ public class PrintStatement implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("PrintStatement(\n");
-    buffer.append("  "+tab+comando);
-    buffer.append("\n");
-    buffer.append("  "+tab+lpar);
-    buffer.append("\n");
+    buffer.append(" "+tab+comando);
+    buffer.append(" "+lpar);
       if (stringExpression != null)
-        buffer.append(stringExpression.toString("  "+tab));
+        buffer.append(stringExpression.toString(" "));
       else
         buffer.append(tab+"  null");
+    buffer.append(" "+rpar);
+    buffer.append(" "+ptvirgula);
     buffer.append("\n");
-    buffer.append("  "+tab+rpar);
-    buffer.append("\n");
-    buffer.append("  "+tab+ptvirgula);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [PrintStatement]");
     return buffer.toString();
   }
 }

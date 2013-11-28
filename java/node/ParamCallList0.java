@@ -44,13 +44,9 @@ public class ParamCallList0 extends ParamCallList {
     buffer.append(tab);
     if (paramCall != null)
       buffer.append(paramCall.toString(" "));
-    else
-      buffer.append(tab+"  null");
     buffer.append("  "+comma);
-      if (paramCallList != null)
-        buffer.append(paramCallList.toString(" "));
-      else
-        buffer.append(tab+"  null");
+    if (paramCallList != null)
+      buffer.append(paramCallList.toString(" "));
     return buffer.toString();
   }
 }

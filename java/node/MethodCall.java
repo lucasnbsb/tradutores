@@ -55,10 +55,8 @@ public class MethodCall implements SyntaxNode {
     buffer.append(tab);
     buffer.append(name);
     buffer.append(" "+lpar);
-      if (paramCallList != null)
-        buffer.append(paramCallList.toString(" "));
-      else
-        buffer.append(tab+"  null");
+    if (paramCallList != null)
+      buffer.append(paramCallList.toString(" "));
     buffer.append(" "+rpar);
     return buffer.toString();
   }

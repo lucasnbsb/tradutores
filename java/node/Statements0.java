@@ -39,20 +39,15 @@ public class Statements0 extends Statements {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("Statements0(\n");
       if (statement != null)
         buffer.append(statement.toString("  "+tab));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
+    //buffer.append("\n");
       if (statements != null)
         buffer.append(statements.toString("  "+tab));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Statements0]");
     return buffer.toString();
   }
 }
