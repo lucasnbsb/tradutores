@@ -40,12 +40,12 @@ public class Statements0 extends Statements {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
       if (statement != null)
-        buffer.append(statement.toString("  "+tab));
+        buffer.append(statement.toString(" "));
       else
         buffer.append(tab+"  null");
     //buffer.append("\n");
       if (statements != null)
-        buffer.append(statements.toString("  "+tab));
+        buffer.append(statements.toString(" "));
       else
         buffer.append(tab+"  null");
     return buffer.toString();

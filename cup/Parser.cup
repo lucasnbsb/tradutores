@@ -160,7 +160,9 @@ precedence left ASS_OP,EXP_OP,COMP_OP,PLUSSIGN;
 prog ::= compilationUnit:c {: 
     RESULT = new Prog(c);
     try{
-        File file = new File(filename+".java");
+        new File("codigo").exists();
+        new File("codigo").mkdir(); // creates a directory
+        File file = new File("codigo" + File.separator + filename+".java"); // creates a file
         file.createNewFile();
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);

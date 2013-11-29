@@ -33,7 +33,6 @@ public class Statement4 extends Statement {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
       if (printStatement != null)
         buffer.append(printStatement.toString(" "));
       else

@@ -36,10 +36,9 @@ public class Statement8 extends Statement {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
       if (methodCall != null)
-        buffer.append(methodCall.toString("  "+tab));
+        buffer.append(methodCall.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
     buffer.append(" "+ptvirgula);
     return buffer.toString();
   }

@@ -37,7 +37,6 @@ public class Statement2 extends Statement {
         buffer.append(ifStatement.toString("  "+tab));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
     return buffer.toString();
   }
 }

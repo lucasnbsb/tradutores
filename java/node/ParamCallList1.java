@@ -33,7 +33,6 @@ public class ParamCallList1 extends ParamCallList {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
       if (paramCall != null)
         buffer.append(paramCall.toString(" "));
     return buffer.toString();

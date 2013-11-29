@@ -39,21 +39,14 @@ public class ImportList1 extends ImportList {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
-
       if (importStatement != null)
-        buffer.append(importStatement.toString("  "+tab));
+        buffer.append(importStatement.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
       if (importList != null)
-        buffer.append(importList.toString("  "+tab));
+        buffer.append(importList.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [ImportList1]");
     return buffer.toString();
   }
 }

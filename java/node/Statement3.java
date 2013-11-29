@@ -34,10 +34,9 @@ public class Statement3 extends Statement {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
       if (whileStatement != null)
-        buffer.append(whileStatement.toString("  "+tab));
+        buffer.append(whileStatement.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
     return buffer.toString();
   }
 }

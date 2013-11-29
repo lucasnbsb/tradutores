@@ -36,11 +36,10 @@ public class Statement0 extends Statement {
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
       if (expression != null)
-        buffer.append(expression.toString("  "+tab));
+        buffer.append(expression.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("  "+tab+ptvirgula);
-    buffer.append("\n");
+    buffer.append(" "+ptvirgula);
     return buffer.toString();
   }
 }

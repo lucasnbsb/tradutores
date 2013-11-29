@@ -37,19 +37,12 @@ public class ReturnStatement0 extends ReturnStatement {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("ReturnStatement0(\n");
-    buffer.append("  "+tab+returnKeyword);
-    buffer.append("\n");
+    buffer.append(" "+returnKeyword);
       if (expression != null)
-        buffer.append(expression.toString("  "+tab));
+        buffer.append(expression.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+ptvirgula);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [ReturnStatement0]");
+    buffer.append(" "+ptvirgula);
     return buffer.toString();
   }
 }

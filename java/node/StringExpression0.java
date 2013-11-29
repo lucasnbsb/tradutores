@@ -41,22 +41,15 @@ public class StringExpression0 extends StringExpression {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    buffer.append("StringExpression0(\n");
-      if (stringExpression != null)
-        buffer.append(stringExpression.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append("  "+tab+mais);
-    buffer.append("\n");
-      if (stringExpression2 != null)
-        buffer.append(stringExpression2.toString("  "+tab));
-      else
-        buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [StringExpression0]");
+    if (stringExpression != null)
+      buffer.append(stringExpression.toString(" "));
+    else
+      buffer.append(tab+"  null");
+    buffer.append(" "+mais);
+    if (stringExpression2 != null)
+      buffer.append(stringExpression2.toString(" "));
+    else
+      buffer.append(tab+"  null");
     return buffer.toString();
   }
 }

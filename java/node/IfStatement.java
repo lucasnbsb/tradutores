@@ -70,14 +70,12 @@ public class IfStatement implements SyntaxNode {
         buffer.append(tab+"  null");
     buffer.append(" "+rpar);
     buffer.append(" "+lcha);
-    buffer.append("\n");
     buffer.append(tab);
       if (statements != null)
         buffer.append(statements.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append(" "+tab+rcha);
-    buffer.append("\n");
+    buffer.append(" "+rcha);
     return buffer.toString();
   }
 }

@@ -40,7 +40,6 @@ public class Statement1 extends Statement {
       else
         buffer.append(tab+"  null");
     buffer.append(" "+ptvirgula);
-    buffer.append("\n");
     return buffer.toString();
   }
 }
