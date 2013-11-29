@@ -55,18 +55,17 @@ public class DeclaracaoMetodo1 extends DeclaracaoMetodo {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab+mod);
+    buffer.append(mod);
     buffer.append(" "+staticKeyword);
     buffer.append(" "+tipo);
     buffer.append(" "+nome);
     buffer.append(" "+lpar);
     if (listParam != null)
-      buffer.append(listParam.toString("  "));
+      buffer.append(listParam.toString(" "));
     buffer.append(" "+rpar);
     buffer.append(" "+lcha);
-    buffer.append("\n");
     if (statements != null)
-      buffer.append(statements.toString("  "+tab));
+      buffer.append(statements.toString(" "));
     buffer.append(" "+rcha);
     return buffer.toString();
   }

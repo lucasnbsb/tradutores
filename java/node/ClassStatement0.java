@@ -33,12 +33,10 @@ public class ClassStatement0 extends ClassStatement {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
       if (field_var_dec != null)
-        buffer.append(field_var_dec.toString("  "+tab));
+        buffer.append(field_var_dec.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
     return buffer.toString();
   }
 }

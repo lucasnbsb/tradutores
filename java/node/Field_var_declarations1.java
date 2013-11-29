@@ -39,20 +39,14 @@ public class Field_var_declarations1 extends Field_var_declarations {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
       if (field_var_dec != null)
-        buffer.append(field_var_dec.toString("  "+tab));
+        buffer.append(field_var_dec.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
       if (field_var_declarations != null)
-        buffer.append(field_var_declarations.toString("  "+tab));
+        buffer.append(field_var_declarations.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Field_var_declarations1]");
     return buffer.toString();
   }
 }

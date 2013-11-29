@@ -48,18 +48,10 @@ public class Field_var_dec implements SyntaxNode {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
-    buffer.append("  "+tab+mod);
-    buffer.append("\n");
-    buffer.append("  "+tab+tipo);
-    buffer.append("\n");
-    buffer.append("  "+tab+nome);
-    buffer.append("\n");
-    buffer.append("  "+tab+ptvirgula);
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Field_var_dec]");
+    buffer.append(" "+mod);
+    buffer.append(" "+tipo);
+    buffer.append(" "+nome);
+    buffer.append(" "+ptvirgula);
     return buffer.toString();
   }
 }

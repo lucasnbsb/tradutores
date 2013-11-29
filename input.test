@@ -1,4 +1,7 @@
 public class teste {
+	public String s2;
+	public int t5;
+
 	public static String getTeste(){
 		return "teste";
 	}

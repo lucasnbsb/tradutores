@@ -33,13 +33,10 @@ public class ClassStatements1 extends ClassStatements {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
       if (classStatement != null)
-        buffer.append(classStatement.toString("  "+tab));
+        buffer.append(classStatement.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    return buffer.toString();
+      return buffer.toString();
   }
 }

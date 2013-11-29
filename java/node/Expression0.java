@@ -33,8 +33,6 @@ public class Expression0 extends Expression {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
       if (numericExpression != null)
         buffer.append(numericExpression.toString(" "));
       else

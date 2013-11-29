@@ -33,15 +33,10 @@ public class Expression1 extends Expression {
 
   public String toString(String tab) {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(tab);
-    
       if (logicalExpression != null)
-        buffer.append(logicalExpression.toString("  "+tab));
+        buffer.append(logicalExpression.toString(" "));
       else
         buffer.append(tab+"  null");
-    buffer.append("\n");
-    buffer.append(tab);
-    buffer.append(") [Expression1]");
     return buffer.toString();
   }
 }
